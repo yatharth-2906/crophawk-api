@@ -45,8 +45,8 @@ POST /api/fertilizer-recommendation
 ```json
 {
   "nitrogen": 40,
-  "potassium": 35,
   "phosphorous": 50,
+  "potassium": 35,
   "temperature": 28,
   "humidity": 64.6,
   "rainfall": 214.4,
@@ -66,7 +66,7 @@ To use the API in a React application, follow the example below:
 ```js
 const fetchFertilizerRecommendation = async () => {
   try {
-    const response = await fetch('https://crophawk-api.onrender.com/api/fertilizer-recommendation', {
+    const response = await fetch('https://crophawk-api.onrender.com/fertilizer-recommendation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
