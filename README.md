@@ -10,7 +10,7 @@ https://crophawk-api.onrender.com/
 
 ## Features
 - **Fertilizer Recommendation**: Get the best-suited fertilizer based on soil parameters.
-- **Crop Prediction**: Predict the best crops based on environmental factors.
+- **Crop Recommendation**: Get the best-suited crop based on soil parameters.
 
 ## API Endpoints
 ### 1. Get Fertilizer Recommendation
@@ -28,13 +28,35 @@ POST /api/fertilizer-recommendation
   "nitrogen": 40,
   "potassium": 35,
   "phosphorous": 50,
-  "ph": 6.8
 }
 ```
 **Response:**
 ```json
 {
   "recommended_fertilizer": "Urea"
+}
+```
+
+### 2. Get Crop Recommendation
+```
+POST /api/fertilizer-recommendation
+```
+**Request Body:**
+```json
+{
+  "nitrogen": 40,
+  "potassium": 35,
+  "phosphorous": 50,
+  "temperature": 28,
+  "humidity": 64.6,
+  "rainfall": 214.4,
+  "pH": 6.8
+}
+```
+**Response:**
+```json
+{
+  "recommended_crop": "Rice"
 }
 ```
 
@@ -58,7 +80,6 @@ const fetchFertilizerRecommendation = async () => {
         "nitrogen": 40,
         "potassium": 35,
         "phosphorous": 50,
-        "ph": 6.8
       })
     });
     const data = await response.json();
