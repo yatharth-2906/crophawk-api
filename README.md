@@ -1,7 +1,7 @@
 # CropHawk Public API
 
 ## Overview
-The CropHawk Public API provides developers with seamless access to our machine learning models for agriculture-related predictions and recommendations.
+The CropHawk Public API provides developers with seamless access to our machine learning models for agriculture related predictions and recommendations.
 
 ## Base URL
 ```
@@ -10,12 +10,12 @@ https://crophawk-api.onrender.com/
 
 ## Features
 - **Fertilizer Recommendation**: Get the best-suited fertilizer based on soil parameters.
-- **Crop Recommendation**: Get the best-suited crop based on soil parameters.
+- **Crop Recommendation**: Get the best-suited crop to grow based on soil parameters.
 
 ## API Endpoints
 ### 1. Get Fertilizer Recommendation
 ```
-POST /api/fertilizer-recommendation
+POST /fertilizer_prediction
 ```
 **Request Body:**
 ```json
@@ -39,7 +39,7 @@ POST /api/fertilizer-recommendation
 
 ### 2. Get Crop Recommendation
 ```
-POST /api/fertilizer-recommendation
+POST /crop_recommendation
 ```
 **Request Body:**
 ```json
@@ -66,7 +66,7 @@ To use the API in a React application, follow the example below:
 ```js
 const fetchFertilizerRecommendation = async () => {
   try {
-    const response = await fetch('https://crophawk-api.onrender.com/fertilizer-recommendation', {
+    const response = await fetch('https://crophawk-api.onrender.com/fertilizer_prediction', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
