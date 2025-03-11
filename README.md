@@ -94,6 +94,6 @@ const fetchFertilizerRecommendation = async () => {
 ### 1. API
 ![Image](https://github.com/user-attachments/assets/0b69744e-1922-4e86-8bf4-43fb37849922)
 
-### 2. API DOCS
-![Image](https://github.com/user-attachments/assets/6034ee1c-9243-4ee4-8f0c-5395e6e661ce)
+### 2. POSTMAN REQUEST
+![Image](https://github.com/user-attachments/assets/9771509c-8f36-451d-9a52-e62e59c0b40e)
 
