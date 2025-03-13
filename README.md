@@ -79,7 +79,7 @@ const fetchFertilizerRecommendation = async () => {
         "crop_type": 2,
         "nitrogen": 40,
         "potassium": 35,
-        "phosphorous": 50,
+        "phosphorous": 50
       })
     });
     const data = await response.json();
