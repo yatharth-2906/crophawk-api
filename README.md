@@ -33,7 +33,7 @@ POST /fertilizer_prediction
 **Response:**
 ```json
 {
-  "recommended_fertilizer": "Urea"
+    "prediction": [ "Superphosphate" ]
 }
 ```
 
@@ -56,7 +56,7 @@ POST /crop_recommendation
 **Response:**
 ```json
 {
-  "recommended_crop": "Rice"
+    "prediction": "mango"
 }
 ```
 
