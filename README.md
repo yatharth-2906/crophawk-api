@@ -1,7 +1,7 @@
 # CropHawk Public API
 
 ## Overview
-The CropHawk Public API provides developers with seamless access to our machine learning models for agriculture-related predictions and recommendations.
+This is the Public API of CropHawk, designed to enable developers to seamlessly integrate and utilize our machine learning models.
 
 ## Base URL
 ```
@@ -9,64 +9,64 @@ https://crophawk-api.onrender.com/
 ```
 
 ## Features
-- **Fertilizer Recommendation**: Get the best-suited fertilizer based on soil parameters.
-- **Crop Recommendation**: Get the best-suited crop based on soil parameters.
+- **Fertilizer Recommendation**: Suggests optimal fertilizers based on the soil conditions.
+- **Crop Recommendation**: Recommends the best crops based on the agricultural parameters.
 
 ## API Endpoints
 ### 1. Get Fertilizer Recommendation
 ```
-POST /api/fertilizer-recommendation
+POST /api/fertilizer_prediction
 ```
 **Request Body:**
 ```json
 {
-  "temperature": 28,
-  "humidity": 65,
-  "moisture": 30,
-  "soil_type": 1,
-  "crop_type": 2,
-  "nitrogen": 40,
-  "potassium": 35,
-  "phosphorous": 50,
+    "temperature": 28,
+    "humidity": 65,
+    "moisture": 30,
+    "soil_type": 1,
+    "crop_type": 2,
+    "nitrogen": 40,
+    "potassium": 35,
+    "phosphorous": 50
 }
 ```
 **Response:**
 ```json
 {
-  "recommended_fertilizer": "Urea"
+    "prediction": [ "Superphosphate" ]
 }
 ```
 
 ### 2. Get Crop Recommendation
 ```
-POST /api/fertilizer-recommendation
+POST /api/crop_recommendation
 ```
 **Request Body:**
 ```json
 {
-  "nitrogen": 40,
-  "potassium": 35,
-  "phosphorous": 50,
-  "temperature": 28,
-  "humidity": 64.6,
-  "rainfall": 214.4,
-  "pH": 6.8
+    "nitrogen": 40,
+    "potassium": 35,
+    "phosphorous": 50,
+    "temperature": 28,
+    "humidity": 64.6,
+    "rainfall": 214.4,
+    "pH": 6.8
 }
 ```
 **Response:**
 ```json
 {
-  "recommended_crop": "Rice"
+    "prediction": "mango"
 }
 ```
 
-## Usage in React
-To use the API in a React application, follow the example below:
+## Usage in JavaScript
+To use the API in a JavaScript application, follow the example below:
 
 ```js
 const fetchFertilizerRecommendation = async () => {
   try {
-    const response = await fetch('https://crophawk-api.onrender.com/api/fertilizer-recommendation', {
+    const response = await fetch('https://crophawk-api.onrender.com/fertilizer-recommendation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -94,6 +94,6 @@ const fetchFertilizerRecommendation = async () => {
 ### 1. API
 ![Image](https://github.com/user-attachments/assets/0b69744e-1922-4e86-8bf4-43fb37849922)
 
-### 2. API DOCS
-![Image](https://github.com/user-attachments/assets/6034ee1c-9243-4ee4-8f0c-5395e6e661ce)
+### 2. API POSTMAN REQUEST
+![Image](https://github.com/user-attachments/assets/9771509c-8f36-451d-9a52-e62e59c0b40e)
 
