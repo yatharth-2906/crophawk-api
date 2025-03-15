@@ -33,6 +33,7 @@ POST /fertilizer_recommendation
 **Response:**
 ```json
 {
+    "status": "success",
     "recommendation": "Superphosphate"
 }
 ```
@@ -56,6 +57,7 @@ POST /crop_recommendation
 **Response:**
 ```json
 {
+    "status": "success",
     "recommendation": "mango"
 }
 ```
@@ -95,4 +97,4 @@ const fetchFertilizerRecommendation = async () => {
 ![Image](https://github.com/user-attachments/assets/0b69744e-1922-4e86-8bf4-43fb37849922)
 
 ### 2. API POSTMAN REQUEST
-![Image](https://github.com/user-attachments/assets/1df77e34-35d5-43f6-9f6c-404f41b406bc)
+![Image](https://github.com/user-attachments/assets/19c19c5f-1e3d-443c-9fd5-7224e57ecc68)
