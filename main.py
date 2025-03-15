@@ -110,42 +110,60 @@ def read_root():
 
 @app.post('/fertilizer_recommendation')
 async def fertilizer_recommendation(input_parameters: model_input):
-    input_data = input_parameters.json()
-    input_dictionary = json.loads(input_data)
+    try:
+        input_data = input_parameters.json()
+        input_dictionary = json.loads(input_data)
 
-    temperature = input_dictionary['temperature']
-    humidity = input_dictionary['humidity']
-    moisture = input_dictionary['moisture']
-    soil_type = input_dictionary['soil_type']
-    crop_type = input_dictionary['crop_type']
-    nitrogen = input_dictionary['nitrogen']
-    potassium = input_dictionary['potassium']
-    phosphorous = input_dictionary['phosphorous']
+        temperature = input_dictionary['temperature']
+        humidity = input_dictionary['humidity']
+        moisture = input_dictionary['moisture']
+        soil_type = input_dictionary['soil_type']
+        crop_type = input_dictionary['crop_type']
+        nitrogen = input_dictionary['nitrogen']
+        potassium = input_dictionary['potassium']
+        phosphorous = input_dictionary['phosphorous']
 
-    input_list = [temperature, humidity, moisture, soil_type, crop_type, nitrogen, potassium, phosphorous]
+        input_list = [temperature, humidity, moisture, soil_type, crop_type, nitrogen, potassium, phosphorous]
 
-    recommendation = fertilizer_model.predict([input_list])
+        recommendation = fertilizer_model.predict([input_list])
 
-    return {"recommendation": recommendation.tolist()}
+        return {"status": "success", "recommendation": recommendation.tolist()}
+
+    except KeyError as e:
+        return {"status": "error", "message": f"Missing key: {str(e)}"}
+    except json.JSONDecodeError:
+        return {"status": "error", "message": "Invalid JSON format"}
+    except Exception as e:
+        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
+
 
 @app.post('/crop_recommendation')
 async def crop_recommendation(input_parameters: crop_model_input):
-    input_data = input_parameters.json()
-    input_dictionary = json.loads(input_data)
+    try:
+        input_data = input_parameters.json()
+        input_dictionary = json.loads(input_data)
 
-    nitrogen = input_dictionary['nitrogen']
-    phosphorous = input_dictionary['phosphorous']
-    potassium = input_dictionary['potassium']
-    temperature = input_dictionary['temperature']
-    humidity = input_dictionary['humidity']
-    pH = input_dictionary['pH']
-    rainfall = input_dictionary['rainfall']
+        nitrogen = input_dictionary['nitrogen']
+        phosphorous = input_dictionary['phosphorous']
+        potassium = input_dictionary['potassium']
+        temperature = input_dictionary['temperature']
+        humidity = input_dictionary['humidity']
+        pH = input_dictionary['pH']
+        rainfall = input_dictionary['rainfall']
 
-    input_list = [nitrogen, phosphorous, potassium, temperature, humidity, pH, rainfall]
+        input_list = [nitrogen, phosphorous, potassium, temperature, humidity, pH, rainfall]
 
-    recommendation = crop_model.predict([input_list])[0]
+        recommendation = crop_model.predict([input_list])[0]
 
-    return {"recommendation": recommendation}
+        return {"status": "success", "recommendation": recommendation}
+
+    except KeyError as e:
+        return {"status": "error", "message": f"Missing key: {str(e)}"}
+    except json.JSONDecodeError:
+        return {"status": "error", "message": "Invalid JSON format"}
+    except Exception as e:
+        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
+
 
 if __name__ == "__main__":
     nest_asyncio.apply()

@@ -15,7 +15,7 @@ https://crophawk-api.onrender.com/
 ## API Endpoints
 ### 1. Get Fertilizer Recommendation
 ```
-POST /api/fertilizer_prediction
+POST /fertilizer_recommendation
 ```
 **Request Body:**
 ```json
@@ -33,13 +33,13 @@ POST /api/fertilizer_prediction
 **Response:**
 ```json
 {
-    "prediction": [ "Superphosphate" ]
+    "recommendation": "Superphosphate"
 }
 ```
 
 ### 2. Get Crop Recommendation
 ```
-POST /api/crop_recommendation
+POST /crop_recommendation
 ```
 **Request Body:**
 ```json
@@ -56,7 +56,7 @@ POST /api/crop_recommendation
 **Response:**
 ```json
 {
-    "prediction": "mango"
+    "recommendation": "mango"
 }
 ```
 
@@ -66,7 +66,7 @@ To use the API in a JavaScript application, follow the example below:
 ```js
 const fetchFertilizerRecommendation = async () => {
   try {
-    const response = await fetch('https://crophawk-api.onrender.com/fertilizer-recommendation', {
+    const response = await fetch('https://crophawk-api.onrender.com/fertilizer_recommendation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -95,5 +95,4 @@ const fetchFertilizerRecommendation = async () => {
 ![Image](https://github.com/user-attachments/assets/0b69744e-1922-4e86-8bf4-43fb37849922)
 
 ### 2. API POSTMAN REQUEST
-![Image](https://github.com/user-attachments/assets/9771509c-8f36-451d-9a52-e62e59c0b40e)
-
+![Image](https://github.com/user-attachments/assets/1df77e34-35d5-43f6-9f6c-404f41b406bc)
