@@ -9,8 +9,8 @@ https://crophawk-api.onrender.com/
 ```
 
 ## Features
--- **Fertilizer Recommendation**: Get the best-suited fertilizer based on soil parameters.
--- **Crop Recommendation**: Get the best-suited crop to grow based on soil parameters.
+**Fertilizer Recommendation**: Get the best-suited fertilizer based on soil parameters.
+**Crop Recommendation**: Get the best-suited crop to grow based on soil parameters.
 
 ## API Endpoints
 ### 1. Get Fertilizer Recommendation
