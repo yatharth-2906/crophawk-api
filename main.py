@@ -108,8 +108,8 @@ def read_root():
     """
     return HTMLResponse(content=html_content, status_code=200)
 
-@app.post('/fertilizer_prediction')
-async def fertilizer_predd(input_parameters: model_input):
+@app.post('/fertilizer_recommendation')
+async def fertilizer_recommendation(input_parameters: model_input):
     input_data = input_parameters.json()
     input_dictionary = json.loads(input_data)
 
@@ -124,9 +124,9 @@ async def fertilizer_predd(input_parameters: model_input):
 
     input_list = [temperature, humidity, moisture, soil_type, crop_type, nitrogen, potassium, phosphorous]
 
-    prediction = fertilizer_model.predict([input_list])
+    recommendation = fertilizer_model.predict([input_list])
 
-    return {"prediction": prediction.tolist()}
+    return {"recommendation": recommendation.tolist()}
 
 @app.post('/crop_recommendation')
 async def crop_recommendation(input_parameters: crop_model_input):
@@ -143,9 +143,9 @@ async def crop_recommendation(input_parameters: crop_model_input):
 
     input_list = [nitrogen, phosphorous, potassium, temperature, humidity, pH, rainfall]
 
-    prediction = crop_model.predict([input_list])[0]
+    recommendation = crop_model.predict([input_list])[0]
 
-    return {"prediction": prediction}
+    return {"recommendation": recommendation}
 
 if __name__ == "__main__":
     nest_asyncio.apply()
