@@ -7,8 +7,8 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 
-fertilizer_model = pickle.load(open('fertilizer_model.pkl', 'rb'))
-crop_model = pickle.load(open('crop_recommendation_model.pkl', 'rb'))
+fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
+crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
 
 app = FastAPI()
 
