@@ -125,9 +125,9 @@ async def fertilizer_recommendation(input_parameters: model_input):
 
         input_list = [temperature, humidity, moisture, soil_type, crop_type, nitrogen, potassium, phosphorous]
 
-        recommendation = fertilizer_model.predict([input_list])
+        recommendation = fertilizer_model.predict([input_list])[0]
 
-        return {"status": "success", "recommendation": recommendation.tolist()}
+        return {"status": "success", "res": recommendation}
 
     except KeyError as e:
         return {"status": "error", "message": f"Missing key: {str(e)}"}
@@ -155,7 +155,7 @@ async def crop_recommendation(input_parameters: crop_model_input):
 
         recommendation = crop_model.predict([input_list])[0]
 
-        return {"status": "success", "recommendation": recommendation}
+        return {"status": "success", "res": recommendation}
 
     except KeyError as e:
         return {"status": "error", "message": f"Missing key: {str(e)}"}
