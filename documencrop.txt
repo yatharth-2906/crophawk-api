@@ -1,0 +1,73 @@
+I've modified the code to focus on detecting yellow coloring at the edges of leaves. Here are the key changes and additions:
+
+Added a new function detect_edges:
+
+This function implements a simple edge detection algorithm using Sobel filters.
+It converts the image to grayscale, applies Sobel filters in both x and y directions, and combines the results to create an edge mask.
+
+
+Modified calculate_edge_yellowness (previously calculate_yellowness):
+
+Now takes both the leaf mask and edge mask as inputs.
+Combines these masks to focus only on the edges of leaves.
+Calculates yellowness only for pixels that are both part of a leaf and on an edge.
+
+
+Updated detect_leaf_edge_yellowness (previously detect_leaf_yellowness):
+
+Now includes the edge detection step.
+Passes both leaf mask and edge mask to the yellowness calculation function.
+
+
+
+This implementation should be more sensitive to yellowing at the edges of leaves, which can be an early indicator of certain plant health issues.
+Some limitations and potential improvements:
+
+The edge detection is fairly basic. More advanced edge detection algorithms could improve accuracy.
+The thresholds for leaf color and edge detection are fixed. Adaptive thresholding could make the algorithm more robust to different lighting conditions and leaf types.
+This method doesn't distinguish between different types of leaf edges (e.g., natural leaf margins vs. damaged areas).
+The algorithm doesn't account for the overall context of the image, so it might be fooled by non-leaf yellow objects near edges.
+
+
+
+
+2nd iteration
+
+
+
+updated the code to incorporate triangulated masks for improved accuracy. Here are the key changes and additions:
+
+Added a new function create_triangulated_mask:
+
+This function takes the binary leaf mask as input and creates a triangulated mask.
+It uses Delaunay triangulation to create a mesh that approximates the shape of the leaves.
+The function randomly selects a subset of points from the leaf mask to keep the computation manageable.
+Corner points are added to ensure full coverage of the image.
+
+
+Modified detect_leaf_edge_yellowness:
+
+Now creates a triangulated mask based on the initial leaf mask.
+Uses the triangulated mask instead of the binary mask for edge detection and yellowness calculation.
+
+
+Updated calculate_edge_yellowness:
+
+Now uses the triangulated mask instead of the binary leaf mask.
+
+
+
+These changes should improve the accuracy of our leaf edge detection in several ways:
+
+Better leaf shape approximation: The triangulated mask can better represent the actual shape of leaves, including curved edges and complex structures.
+Reduced noise: By using a subset of points for triangulation, we can reduce the impact of noise in the initial leaf mask.
+Improved edge detection: The triangulated mask can help distinguish between actual leaf edges and internal leaf structures or background elements.
+Adaptive to different leaf shapes: This method can adapt to various leaf shapes without needing to pre-define specific shape parameters.
+
+Potential further improvements:
+
+Adaptive point selection: Instead of random point selection, we could use a method that prioritizes points along the leaf edges or high-contrast areas.
+Multi-scale analysis: We could perform the triangulation at multiple scales to capture both fine details and overall leaf structure.
+Color-based triangulation: We could incorporate color information into the triangulation process to better distinguish between different parts of the leaf.
+Machine learning integration: We could use a trained model to improve the initial leaf segmentation before triangulation.
+Temporal analysis: If working with multiple images over time, we could track changes in the triangulated structure to detect progressive yellowing.
