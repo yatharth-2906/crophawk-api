@@ -63,7 +63,7 @@ POST /crop_recommendation
 ```
 
 ## Usage in JavaScript
-To use the API in a JavaScript application, follow the example below:
+To use the API in a JavaScript applications, follow the example below:
 
 ```js
 const fetchFertilizerRecommendation = async () => {
