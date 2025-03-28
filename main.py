@@ -37,7 +37,7 @@ class crop_model_input(BaseModel):
     nitrogen : int
     phosphorous : int
     potassium : int
-    temperature : int
+    temperature : float
     humidity : float
     pH : float
     rainfall : float
