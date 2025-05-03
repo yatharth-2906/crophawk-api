@@ -1,7 +1,7 @@
 # CropHawk Public API
 
 ## Overview
-This is the Public API of CropHawk, designed to enable developers to seamlessly integrate and utilize our machine learning models.
+This is the Public API of CropHawk, designed to enable developers to seamlessly integrate and utilize our machine learning models into their applications.
 
 ## Base URL
 ```
