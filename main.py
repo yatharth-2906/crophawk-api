@@ -6,9 +6,21 @@ import json
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
+import gdown
+import os
 
 fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
 crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
+
+model_path = "MODELS/crop_yield_model.pkl"
+file_id = "1i7r4UYWnISlCKNT89rMWMBUznV9KS-Lk"
+url = f"https://drive.google.com/uc?id={file_id}"
+
+if not os.path.exists(model_path):
+    os.makedirs("MODELS", exist_ok=True)
+    gdown.download(url, model_path, quiet=False)
+
+yield_model = pickle.load(open(model_path, 'rb'))
 
 app = FastAPI()
 
@@ -33,7 +45,6 @@ class model_input(BaseModel):
     phosphorous: int
 
 class crop_model_input(BaseModel):
-
     nitrogen : int
     phosphorous : int
     potassium : int
@@ -41,6 +52,14 @@ class crop_model_input(BaseModel):
     humidity : float
     pH : float
     rainfall : float
+
+class yield_model_input(BaseModel):
+    State: int
+    District: int
+    Crop: int
+    Crop_Year: int
+    Season: int
+    Area: float
 
 @app.get("/", response_class=HTMLResponse)
 def read_root():
@@ -161,6 +180,30 @@ async def crop_recommendation(input_parameters: crop_model_input):
         return {"status": "error", "message": f"Missing key: {str(e)}"}
     except json.JSONDecodeError:
         return {"status": "error", "message": "Invalid JSON format"}
+    except Exception as e:
+        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
+
+@app.post('/yield_prediction')
+async def yield_prediction(input_parameters: yield_model_input):
+    try:
+        input_data = input_parameters.json()
+        input_dict = json.loads(input_data)
+
+        input_list = [
+            input_dict['State'],
+            input_dict['District'],
+            input_dict['Crop'],
+            input_dict['Crop_Year'],
+            input_dict['Season'],
+            input_dict['Area']
+        ]
+
+        prediction = yield_model.predict([input_list])[0]
+
+        return {"status": "success", "res": prediction}
+
+    except KeyError as e:
+        return {"status": "error", "message": f"Missing key: {str(e)}"}
     except Exception as e:
         return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
 
