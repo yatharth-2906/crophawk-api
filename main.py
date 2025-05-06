@@ -179,12 +179,12 @@ async def yield_prediction(input_parameters: yield_model_input):
         input_dict = json.loads(input_data)
 
         input_list = [
-            input_dict['State'],
-            input_dict['District'],
-            input_dict['Crop'],
-            input_dict['Crop_Year'],
-            input_dict['Season'],
-            input_dict['Area']
+            input_dict['state'],
+            input_dict['district'],
+            input_dict['crop_year'],
+            input_dict['crop_type'],
+            input_dict['season'],
+            input_dict['area']
         ]
 
         prediction = yield_model.predict([input_list])[0]
