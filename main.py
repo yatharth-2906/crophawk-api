@@ -6,21 +6,10 @@ import json
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
-import gdown
-import os
 
 fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
 crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
-
-model_path = "MODELS/crop_yield_model.pkl"
-file_id = "1i7r4UYWnISlCKNT89rMWMBUznV9KS-Lk"
-url = f"https://drive.google.com/uc?id={file_id}"
-
-if not os.path.exists(model_path):
-    os.makedirs("MODELS", exist_ok=True)
-    gdown.download(url, model_path, quiet=False)
-
-yield_model = pickle.load(open(model_path, 'rb'))
+yield_model = pickle.load(open('MODELS/crop_yield_model.pkl', 'rb'))
 
 app = FastAPI()
 
