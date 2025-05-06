@@ -43,12 +43,12 @@ class crop_model_input(BaseModel):
     rainfall : float
 
 class yield_model_input(BaseModel):
-    State: int
-    District: int
-    Crop: int
-    Crop_Year: int
-    Season: int
-    Area: float
+    state: int
+    district: int
+    crop_year: int
+    crop_type: int
+    season: int
+    area: float
 
 @app.get("/", response_class=HTMLResponse)
 def read_root():
