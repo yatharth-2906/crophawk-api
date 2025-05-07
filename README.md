@@ -11,9 +11,10 @@ https://crophawk-api.onrender.com/
 ## Features
 - **Fertilizer Recommendation**: Suggests optimal fertilizers based on the soil conditions.
 - **Crop Recommendation**: Recommends the best crops based on the agricultural parameters.
+- **Yield Prediction**: Predicts crop yield based on historical data and agricultural factirs to support efficient planning.
 
 ## API Endpoints
-### 1. Get Fertilizer Recommendation
+### 1. Fertilizer Recommendation
 ```
 POST /fertilizer_recommendation
 ```
@@ -34,11 +35,11 @@ POST /fertilizer_recommendation
 ```json
 {
     "status": "success",
-    "recommendation": "Superphosphate"
+    "res": "Superphosphate"
 }
 ```
 
-### 2. Get Crop Recommendation
+### 2. Crop Recommendation
 ```
 POST /crop_recommendation
 ```
@@ -58,7 +59,30 @@ POST /crop_recommendation
 ```json
 {
     "status": "success",
-    "recommendation": "mango"
+    "res": "mango"
+}
+```
+
+### 3. Yield Prediction
+```
+POST /yield_prediction
+```
+**Request Body:**
+```json
+{
+    "state": 4,
+    "district": 88,
+    "crop_year": 2003,
+    "crop_type": 2,
+    "season": 3,
+    "area": 304.8
+}
+```
+**Response:**
+```json
+{
+    "status": "success",
+    "res": "952.8"
 }
 ```
 

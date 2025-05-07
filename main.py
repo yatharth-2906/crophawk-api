@@ -110,7 +110,7 @@ def read_root():
         <div class="container">
             <h1>Welcome to CropHawk 🌾</h1>
             <p>Your one-stop solution for smart farming and crop recommendations.</p>
-            <button class="btn" onclick="window.location.href='/docs'">Explore our API</button>
+            <button class="btn" onclick="window.open('https://crophawk-app.vercel.app/', '_blank')">Explore our Web Application</button>
         </div>
     </body>
     </html>
