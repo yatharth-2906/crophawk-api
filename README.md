@@ -122,3 +122,6 @@ const fetchFertilizerRecommendation = async () => {
 
 ### 2. API POSTMAN REQUEST
 ![Image](https://github.com/user-attachments/assets/19c19c5f-1e3d-443c-9fd5-7224e57ecc68)
+
+## Contact
+For any issues, reach out at [yatharth2906@gmail.com] or open an issue on GitHub.
