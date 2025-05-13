@@ -45,7 +45,6 @@ class crop_model_input(BaseModel):
 class yield_model_input(BaseModel):
     state: int
     district: int
-    crop_year: int
     crop_type: int
     season: int
     area: float
@@ -182,7 +181,6 @@ async def yield_prediction(input_parameters: yield_model_input):
         input_list = [
             input_dict['state'],
             input_dict['district'],
-            input_dict['crop_year'],
             input_dict['crop_type'],
             input_dict['season'],
             input_dict['area']
