@@ -195,6 +195,9 @@ async def yield_prediction(input_parameters: yield_model_input):
     except Exception as e:
         return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "Service is healthy"}
 
 if __name__ == "__main__":
     nest_asyncio.apply()
