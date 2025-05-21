@@ -72,7 +72,6 @@ POST /yield_prediction
 {
     "state": 4,
     "district": 88,
-    "crop_year": 2003,
     "crop_type": 2,
     "season": 3,
     "area": 304.8
