@@ -7,11 +7,23 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+
 fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
 crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
 yield_model = pickle.load(open('MODELS/crop_yield_model.pkl', 'rb'))
 
 app = FastAPI()
+
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, lambda request, exc: JSONResponse(
+    status_code=429, content={"status": "error", "message": "Too Many Requests"}
+))
+app.add_middleware(SlowAPIMiddleware)
 
 origins = ["*"]
 
@@ -117,6 +129,7 @@ def read_root():
     return HTMLResponse(content=html_content, status_code=200)
 
 @app.post('/fertilizer_recommendation')
+@limiter.limit("10/minute")
 async def fertilizer_recommendation(input_parameters: model_input):
     try:
         input_data = input_parameters.json()
@@ -146,6 +159,7 @@ async def fertilizer_recommendation(input_parameters: model_input):
 
 
 @app.post('/crop_recommendation')
+@limiter.limit("10/minute")
 async def crop_recommendation(input_parameters: crop_model_input):
     try:
         input_data = input_parameters.json()
@@ -173,6 +187,7 @@ async def crop_recommendation(input_parameters: crop_model_input):
         return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
 
 @app.post('/yield_prediction')
+@limiter.limit("10/minute")
 async def yield_prediction(input_parameters: yield_model_input):
     try:
         input_data = input_parameters.json()
