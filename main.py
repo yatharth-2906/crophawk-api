@@ -23,6 +23,8 @@ except Exception as e:
 
 app = FastAPI()
 
+request_limit_per_minute = 10
+rate_limit_str = f"{request_limit_per_minute}/minute"
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, lambda request, exc: JSONResponse(
@@ -133,7 +135,7 @@ def read_root():
     return HTMLResponse(content=html_content, status_code=200)
 
 @app.post('/fertilizer_recommendation')
-@limiter.limit("10/minute")
+@limiter.limit(rate_limit_str)
 async def fertilizer_recommendation(request: Request, input_parameters: ModelInput):  
     try:
         input_list = [
@@ -157,7 +159,7 @@ async def fertilizer_recommendation(request: Request, input_parameters: ModelInp
         )
 
 @app.post('/crop_recommendation')
-@limiter.limit("10/minute")
+@limiter.limit(rate_limit_str)
 async def crop_recommendation(request: Request, input_parameters: CropModelInput):  
     try:
         input_list = [
@@ -180,7 +182,7 @@ async def crop_recommendation(request: Request, input_parameters: CropModelInput
         )
 
 @app.post('/yield_prediction')
-@limiter.limit("10/minute")
+@limiter.limit(rate_limit_str)
 async def yield_prediction(request: Request, input_parameters: YieldModelInput):  
     try:
         input_list = [
