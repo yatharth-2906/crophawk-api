@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 import pickle
@@ -134,7 +134,7 @@ def read_root():
 
 @app.post('/fertilizer_recommendation')
 @limiter.limit("10/minute")
-async def fertilizer_recommendation(input_parameters: ModelInput):  
+async def fertilizer_recommendation(request: Request, input_parameters: ModelInput):  
     try:
         input_list = [
             input_parameters.temperature,
@@ -158,7 +158,7 @@ async def fertilizer_recommendation(input_parameters: ModelInput):
 
 @app.post('/crop_recommendation')
 @limiter.limit("10/minute")
-async def crop_recommendation(input_parameters: CropModelInput):  
+async def crop_recommendation(request: Request, input_parameters: CropModelInput):  
     try:
         input_list = [
             input_parameters.nitrogen,
@@ -181,7 +181,7 @@ async def crop_recommendation(input_parameters: CropModelInput):
 
 @app.post('/yield_prediction')
 @limiter.limit("10/minute")
-async def yield_prediction(input_parameters: YieldModelInput):  
+async def yield_prediction(request: Request, input_parameters: YieldModelInput):  
     try:
         input_list = [
             input_parameters.state,
