@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Response
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 import pickle
 import json
@@ -12,30 +12,34 @@ from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 
-fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
-crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
-yield_model = pickle.load(open('MODELS/crop_yield_model.pkl', 'rb'))
+try:
+    fertilizer_model = pickle.load(open('MODELS/fertilizer_model.pkl', 'rb'))
+    crop_model = pickle.load(open('MODELS/crop_recommendation_model.pkl', 'rb'))
+    yield_model = pickle.load(open('MODELS/crop_yield_model.pkl', 'rb'))
+except FileNotFoundError as e:
+    raise RuntimeError(f"Model file not found: {str(e)}")
+except Exception as e:
+    raise RuntimeError(f"Error loading model: {str(e)}")
 
 app = FastAPI()
 
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, lambda request, exc: JSONResponse(
-    status_code=429, content={"status": "error", "message": "Too Many Requests"}
+    status_code=429, 
+    content={"status": "error", "message": "Too Many Requests"}
 ))
 app.add_middleware(SlowAPIMiddleware)
 
-origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["POST"],
+    allow_methods=["*"], 
     allow_headers=["*"],
 )
 
-class model_input(BaseModel):
+class ModelInput(BaseModel): 
     temperature: int
     humidity: int
     moisture: int
@@ -45,16 +49,16 @@ class model_input(BaseModel):
     potassium: int
     phosphorous: int
 
-class crop_model_input(BaseModel):
-    nitrogen : int
-    phosphorous : int
-    potassium : int
-    temperature : float
-    humidity : float
-    pH : float
-    rainfall : float
+class CropModelInput(BaseModel): 
+    nitrogen: int
+    phosphorous: int
+    potassium: int
+    temperature: float
+    humidity: float
+    pH: float
+    rainfall: float
 
-class yield_model_input(BaseModel):
+class YieldModelInput(BaseModel):  
     state: int
     district: int
     crop_type: int
@@ -130,85 +134,71 @@ def read_root():
 
 @app.post('/fertilizer_recommendation')
 @limiter.limit("10/minute")
-async def fertilizer_recommendation(input_parameters: model_input):
+async def fertilizer_recommendation(input_parameters: ModelInput):  
     try:
-        input_data = input_parameters.json()
-        input_dictionary = json.loads(input_data)
-
-        temperature = input_dictionary['temperature']
-        humidity = input_dictionary['humidity']
-        moisture = input_dictionary['moisture']
-        soil_type = input_dictionary['soil_type']
-        crop_type = input_dictionary['crop_type']
-        nitrogen = input_dictionary['nitrogen']
-        potassium = input_dictionary['potassium']
-        phosphorous = input_dictionary['phosphorous']
-
-        input_list = [temperature, humidity, moisture, soil_type, crop_type, nitrogen, potassium, phosphorous]
+        input_list = [
+            input_parameters.temperature,
+            input_parameters.humidity,
+            input_parameters.moisture,
+            input_parameters.soil_type,
+            input_parameters.crop_type,
+            input_parameters.nitrogen,
+            input_parameters.potassium,
+            input_parameters.phosphorous
+        ]
 
         recommendation = fertilizer_model.predict([input_list])[0]
+        return {"status": "success", "res": recommendation}  
 
-        return {"status": "success", "res": recommendation}
-
-    except KeyError as e:
-        return {"status": "error", "message": f"Missing key: {str(e)}"}
-    except json.JSONDecodeError:
-        return {"status": "error", "message": "Invalid JSON format"}
     except Exception as e:
-        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
-
+        return JSONResponse(
+            status_code=500,
+            content={"status": "error", "message": f"Internal Server Error: {str(e)}"}
+        )
 
 @app.post('/crop_recommendation')
 @limiter.limit("10/minute")
-async def crop_recommendation(input_parameters: crop_model_input):
+async def crop_recommendation(input_parameters: CropModelInput):  
     try:
-        input_data = input_parameters.json()
-        input_dictionary = json.loads(input_data)
-
-        nitrogen = input_dictionary['nitrogen']
-        phosphorous = input_dictionary['phosphorous']
-        potassium = input_dictionary['potassium']
-        temperature = input_dictionary['temperature']
-        humidity = input_dictionary['humidity']
-        pH = input_dictionary['pH']
-        rainfall = input_dictionary['rainfall']
-
-        input_list = [nitrogen, phosphorous, potassium, temperature, humidity, pH, rainfall]
+        input_list = [
+            input_parameters.nitrogen,
+            input_parameters.phosphorous,
+            input_parameters.potassium,
+            input_parameters.temperature,
+            input_parameters.humidity,
+            input_parameters.pH,
+            input_parameters.rainfall
+        ]
 
         recommendation = crop_model.predict([input_list])[0]
+        return {"status": "success", "res": recommendation} 
 
-        return {"status": "success", "res": recommendation}
-
-    except KeyError as e:
-        return {"status": "error", "message": f"Missing key: {str(e)}"}
-    except json.JSONDecodeError:
-        return {"status": "error", "message": "Invalid JSON format"}
     except Exception as e:
-        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
+        return JSONResponse(
+            status_code=500,
+            content={"status": "error", "message": f"Internal Server Error: {str(e)}"}
+        )
 
 @app.post('/yield_prediction')
 @limiter.limit("10/minute")
-async def yield_prediction(input_parameters: yield_model_input):
+async def yield_prediction(input_parameters: YieldModelInput):  
     try:
-        input_data = input_parameters.json()
-        input_dict = json.loads(input_data)
-
         input_list = [
-            input_dict['state'],
-            input_dict['district'],
-            input_dict['crop_type'],
-            input_dict['season'],
-            input_dict['area']
+            input_parameters.state,
+            input_parameters.district,
+            input_parameters.crop_type,
+            input_parameters.season,
+            input_parameters.area
         ]
 
         prediction = yield_model.predict([input_list])[0]
+        return {"status": "success", "res": prediction} 
 
-        return {"status": "success", "res": prediction}
-
-    except KeyError as e:
-        return {"status": "error", "message": f"Missing key: {str(e)}"}
     except Exception as e:
-        return {"status": "error", "message": f"Internal Server Error: {str(e)}"}
+        return JSONResponse(
+            status_code=500,
+            content={"status": "error", "message": f"Internal Server Error: {str(e)}"}
+        )
 
 @app.get("/health")
 def health_check():
